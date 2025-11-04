@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Minimal Site</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Welcome</h1>
+      <p>This is a fresh minimal site. No templates used.</p>
+    </header>
+
+    <section id="quiz" aria-labelledby="quiz-heading">
+      <h2 id="quiz-heading">Quick Quiz</h2>
+      <div id="quizQuestions"></div>
+      <div>
+        <button id="submitQuiz">Submit</button>
+        <button id="resetQuiz">Reset</button>
+      </div>
+      <p id="quizResult" aria-live="polite"></p>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Contact</h2>
+      <form id="contactForm">
+        <label>Name <input id="name" name="name"></label>
+        <label>Email <input id="email" type="email" name="email"></label>
+        <label>Message <textarea id="message" name="message"></textarea></label>
+        <button type="submit">Send</button>
+      </form>
+      <p id="contactResult" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

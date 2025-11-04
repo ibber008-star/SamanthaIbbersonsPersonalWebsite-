@@ -1,0 +1,279 @@
+/* style.css - simplified personal site styles based on provided template */
+
+/* ===== VARIABLES ===== */
+:root {
+    --primary-color: #8B3E2F; /* warm brown */
+    --secondary-color: #D98E3A; /* burnt gold */
+    --accent-color: #B3472A; /* pumpkin */
+    --text-color: #332a24;
+    --background-color: #fff7f2; /* very light warm */
+    --gray: #f6efe9;
+}
+
+/* ===== RESET & BASE STYLES ===== */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;line-height:1.6;color:var(--text-color);background-color:var(--background-color)}
+main{max-width:1100px;margin:2rem auto;padding:0 1rem}
+
+/* ===== NAVIGATION ===== */
+nav{background-color:var(--primary-color);padding:1rem}
+nav ul{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:1rem}
+nav a{color:#fff;text-decoration:none;padding:.5rem 1rem;border-radius:5px;display:inline-block}
+nav a:hover{background-color:rgba(255,255,255,0.1)}
+
+/* ===== HERO ===== */
+.hero-inner{display:flex;gap:2rem;align-items:center}
+.photo img{width:220px;height:220px;object-fit:cover;border-radius:8px;border:4px solid var(--secondary-color)}
+.intro h1{color:var(--primary-color);font-size:2rem;margin-bottom:.25rem}
+.lead{font-weight:600;color:#555}
+.buttons{margin-top:1rem}
+.btn{display:inline-block;background:var(--primary-color);color:#fff;padding:.5rem 0.75rem;border-radius:6px;margin-right:.5rem;text-decoration:none}
+
+/* ===== ABOUT ===== */
+.about{margin-top:2rem}
+
+/* ===== FOOTER ===== */
+footer{background-color:var(--gray);text-align:center;padding:2rem;margin-top:3rem}
+
+/* Career page image styling */
+.career-photo{max-width:520px;margin:1.5rem auto;text-align:center}
+.career-photo img{width:100%;max-width:420px;height:auto;border-radius:8px;display:block;margin:0 auto}
+.career-photo figcaption{font-size:0.95rem;color:var(--text-color);margin-top:0.5rem}
+
+/* Hobby page smaller centered image */
+.hobby-photo {
+    max-width: 520px;
+    margin: 1rem auto;
+    text-align: center;
+}
+.hobby-photo img {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    display: block;
+    margin: 0 auto;
+}
+.hobby-photo figcaption {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    margin-top: 0.5rem;
+}
+
+/* Small hobby image inserted under the first paragraph */
+.hobby-photo-small {
+    display: block;
+    width: 220px;
+    max-width: 40%;
+    height: auto;
+    margin: 0.75rem auto 1rem auto;
+    border-radius: 6px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+/* Square small image variant (for Fire image) */
+.hobby-photo-square img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Row layout for hobby photos: side-by-side on wider screens */
+.hobby-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 0 auto 1.5rem auto;
+    max-width: 900px;
+}
+.hobby-row .hobby-photo {
+    flex: 1 1 320px; /* grow, shrink, base width */
+    margin: 0;
+}
+
+@media (max-width: 520px) {
+    .hobby-row { gap: 0.6rem; }
+    .hobby-row .hobby-photo { flex-basis: 100%; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:768px){
+    .hero-inner{flex-direction:column;align-items:center}
+    .photo img{width:160px;height:160px}
+}
+/* Global styles */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f9f9fb;
+    color: #222;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+a:hover, a:focus {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* Navigation */
+nav {
+    background: var(--background-color);
+    border-bottom: 1px solid var(--gray);
+    padding: 0.5rem 2rem;
+    display: flex;
+    gap: 1.5rem;
+}
+nav a.nav-link {
+    color: var(--text-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 3px;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+}
+nav a.nav-link.active,
+nav a.nav-link:active {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+/* Contact Form */
+form#contactForm {
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 2rem;
+    max-width: 420px;
+    margin: 2rem auto;
+}
+form#contactForm label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+form#contactForm input,
+form#contactForm textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 1rem;
+    background: #fafbfc;
+    transition: border 0.2s;
+}
+form#contactForm input:focus,
+form#contactForm textarea:focus {
+    border-color: var(--accent-color);
+    outline: none;
+}
+form#contactForm button {
+    background: var(--accent-color);
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+form#contactForm button:hover {
+    background: var(--primary-color);
+}
+#contactResult {
+    margin-top: 1rem;
+    font-size: 1.05rem;
+    color: var(--accent-color);
+    min-height: 1.2em;
+}
+
+/* Quiz Styles */
+#quiz {
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+}
+.quiz-question {
+    border-left: 4px solid #efe4dd;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: #fff6f2;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+}
+.quiz-question p {
+    margin: 0 0 0.5rem 0;
+}
+.quiz-question label {
+    cursor: pointer;
+    font-size: 1rem;
+}
+.quiz-question input[type="radio"] {
+    accent-color: var(--accent-color);
+    margin-right: 0.5em;
+}
+.feedback {
+    margin-top: 0.5rem;
+    font-size: 0.98rem;
+    font-style: italic;
+}
+.feedback.muted {
+    color: #888;
+}
+#quizResult {
+    margin: 2rem auto 0 auto;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--accent-color);
+    min-height: 1.5em;
+}
+.quiz-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+.quiz-controls button {
+    background: #2a7ae2;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+.quiz-controls button:hover {
+    background: #174ea6;
+}
+
+/* Utility */
+.muted {
+    color: #888;
+}
+@media (max-width: 600px) {
+    nav {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+    }
+    #quiz, form#contactForm {
+        padding: 1rem;
+        margin: 1rem;
+    }
+}

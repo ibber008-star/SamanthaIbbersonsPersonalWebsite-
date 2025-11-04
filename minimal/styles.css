@@ -1,0 +1,13 @@
+:root{--bg:#fff;--text:#222;--accent:#cc3333}
+*{box-sizing:border-box}
+body{font-family:system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:2rem}
+main{max-width:720px;margin:0 auto}
+header h1{margin:0 0 .25rem}
+section{margin-top:2rem}
+button{background:var(--accent);color:#fff;border:none;padding:.5rem 1rem;border-radius:6px;cursor:pointer}
+button[disabled]{opacity:.6}
+label{display:block;margin:.5rem 0}
+input,textarea{width:100%;padding:.5rem;border:1px solid #ddd;border-radius:6px}
+.quiz-question{border:1px solid #eee;padding:.5rem;margin:.5rem 0;border-radius:6px}
+.feedback{margin:.25rem 0;color:green}
+.muted{color:#666}
