@@ -32,6 +32,43 @@ nav a:hover{background-color:rgba(255,255,255,0.1)}
 /* ===== ABOUT ===== */
 .about{margin-top:2rem}
 
+/* ===== PAGE CONTENT STYLES ===== */
+main h1 {
+	color: var(--primary-color);
+	font-size: 2.2rem;
+	margin-bottom: 1.5rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 3px solid var(--secondary-color);
+}
+
+main h2 {
+	color: var(--primary-color);
+	font-size: 1.6rem;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+main section {
+	margin-bottom: 2rem;
+}
+
+main section p {
+	margin-bottom: 1rem;
+	line-height: 1.7;
+}
+
+main p a {
+	color: var(--accent-color);
+	text-decoration: none;
+	font-weight: 500;
+	transition: color 0.2s;
+}
+
+main p a:hover {
+	color: var(--primary-color);
+	text-decoration: underline;
+}
+
 /* ===== FOOTER ===== */
 footer{background-color:var(--gray);text-align:center;padding:2rem;margin-top:3rem}
 
@@ -105,16 +142,8 @@ footer{background-color:var(--gray);text-align:center;padding:2rem;margin-top:3r
     .hero-inner{flex-direction:column;align-items:center}
     .photo img{width:160px;height:160px}
 }
-/* Global styles */
-body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #f9f9fb;
-    color: #222;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-}
 
+/* Link styles */
 a {
     color: var(--accent-color);
     text-decoration: none;
@@ -125,14 +154,7 @@ a:hover, a:focus {
     text-decoration: underline;
 }
 
-/* Navigation */
-nav {
-    background: var(--background-color);
-    border-bottom: 1px solid var(--gray);
-    padding: 0.5rem 2rem;
-    display: flex;
-    gap: 1.5rem;
-}
+/* Navigation link styles (for nav-link class) */
 nav a.nav-link {
     color: var(--text-color);
     padding: 0.25rem 0.75rem;

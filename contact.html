@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Samantha Ibberson - Contact</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<!-- Navigation Menu (same on all pages) -->
+	<nav>
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="hobbies.html">Hobbies</a></li>
+			<li><a href="discover.html">Discover UMD</a></li>
+			<li><a href="Samantha%20Resume%202025.pdf" target="_blank" rel="noopener noreferrer">Resume</a></li>
+			<li><a href="Career Info.html">Career</a></li>
+			<li><a href="Game Fun.html">Game</a></li>
+			<li><a href="video.html">Video</a></li>
+			<li><a href="contact.html">Contact</a></li>
+		</ul>
+	</nav>
+
+	<main>
+		<h1>Contact Me</h1>
+		<section>
+			<p>I'd love to hear from you! Feel free to reach out if you have questions, opportunities, or just want to connect.</p>
+		</section>
+
+		<section>
+			<h2>Get in Touch</h2>
+			<p><strong>Email:</strong> <a href="mailto:SamanthaIbberson1@gmail.com">SamanthaIbberson1@gmail.com</a></p>
+			
+			<form id="contactForm" onsubmit="return handleContact(event);">
+				<label for="name">Name:</label>
+				<input type="text" id="name" name="name" required>
+				
+				<label for="email">Email:</label>
+				<input type="email" id="email" name="email" required>
+				
+				<label for="message">Message:</label>
+				<textarea id="message" name="message" rows="5" required></textarea>
+				
+				<button type="submit">Send Message</button>
+			</form>
+			<p id="contactResult"></p>
+		</section>
+
+		<p><a href="index.html">← Back to home</a></p>
+	</main>
+
+	<!-- Footer (same on all pages) -->
+	<footer>
+		<p>&copy; 2025 Samantha Ibberson. All rights reserved.</p>
+	</footer>
+
+	<script src="js/main.js"></script>
+</body>
+</html>
+

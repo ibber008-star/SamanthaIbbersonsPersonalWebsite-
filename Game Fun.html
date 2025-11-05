@@ -1,132 +1,405 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Bulldog Runner - Samantha</title>
-    <style>
-      :root{--bg:#f7f5f2;--panel:#fff;--primary:#8b5e3c}
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Samantha Ibberson - Game</title>
+	<link rel="stylesheet" href="css/style.css">
+	<style>
+      /* Game-specific styles only - navigation uses main CSS */
+      :root{--bg:#f7f5f2;--panel:#fff}
       body{font-family:Arial,Helvetica,sans-serif;margin:0;background:var(--bg);color:#222}
-      nav{background:var(--primary)}
-      nav ul{display:flex;gap:0;margin:0;padding:0 12px;list-style:none}
-      nav li{flex:1;text-align:center}
-      nav a{display:block;padding:12px 6px;color:#fff;text-decoration:none;font-weight:600}
-      nav a:hover{background:#7a4f34}
-      main{max-width:980px;margin:24px auto;padding:18px;background:var(--panel);border-radius:10px}
+      main{max-width:1200px;margin:24px auto;padding:18px;background:var(--panel);border-radius:10px}
 
-      /* Game area */
-      #game{position:relative;width:820px;height:200px;margin:20px auto;background:#87ceeb;border-radius:8px;border:2px solid #333;overflow:hidden}
-      #ground{position:absolute;left:0;right:0;bottom:0;height:40px;background:#654321}
-      #bulldog{position:absolute;left:40px;bottom:40px;width:60px;height:60px;background:url('images/bulldog.avif') no-repeat center/contain}
-      #bulldog.ducking{height:36px}
-      .obstacle{position:absolute;background:#333;border-radius:4px}
-      .obstacle.low{bottom:90px;width:30px;height:20px}
-      .obstacle.high{bottom:40px;width:20px;height:40px}
-      #score{position:absolute;top:8px;right:12px;font-weight:bold;color:#fff;text-shadow:1px 1px 2px rgba(0,0,0,0.6)}
-      #startScreen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);z-index:10}
-      #startButton{padding:10px 18px;border-radius:8px;border:none;background:#ff7f50;color:#fff;font-weight:700;cursor:pointer}
-      @media (max-width:840px){#game{width:100%;height:180px}}
-    </style>
-  </head>
-  <body>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="hobbies.html">Hobbies</a></li>
-        <li><a href="discover.html">Discover UMD</a></li>
-        <li><a href="Resume.html">Resume</a></li>
-        <li><a href="Career Info.html">Career</a></li>
-        <li><a href="Game Fun.html">Game</a></li>
-      </ul>
-    </nav>
+      /* Game area - much larger */
+      #game{position:relative;width:100%;max-width:1100px;height:450px;margin:20px auto;background:linear-gradient(to bottom, #87ceeb 0%, #87ceeb 70%, #98d8e8 100%);border-radius:12px;border:3px solid #333;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+      #ground{position:absolute;left:0;right:0;bottom:0;height:60px;background:linear-gradient(to bottom, #654321 0%, #8b4513 100%);border-top:3px solid #5a3a1f}
+      
+      /* Background clouds */
+      .cloud{position:absolute;background:rgba(255,255,255,0.7);border-radius:50px;opacity:0.6;animation:float 20s infinite linear}
+      .cloud:before,.cloud:after{content:'';position:absolute;background:rgba(255,255,255,0.7);border-radius:50px}
+      @keyframes float{from{left:110%;}to{left:-10%;}}
+      
+      /* Bulldog character - larger */
+      #bulldog{position:absolute;left:60px;bottom:60px;width:80px;height:80px;background:url('images/bulldog.avif') no-repeat center/contain;transition:transform 0.1s;z-index:5}
+      #bulldog.ducking{height:48px;transform:scaleY(0.6)}
+      #bulldog.jumping{transform:scaleY(1.1) translateY(-5px)}
+      
+      /* Obstacles - larger and more visible */
+      .obstacle{position:absolute;background:linear-gradient(to bottom, #2c2c2c 0%, #1a1a1a 100%);border-radius:6px;box-shadow:0 4px 8px rgba(0,0,0,0.5);transition:transform 0.1s}
+      .obstacle.low{bottom:120px;width:40px;height:30px;border-top-left-radius:20px;border-top-right-radius:20px}
+      .obstacle.high{bottom:60px;width:30px;height:90px;border-top-left-radius:15px;border-top-right-radius:15px}
+      
+      /* Score and UI */
+      #score{position:absolute;top:15px;right:20px;font-weight:bold;font-size:1.4rem;color:#fff;text-shadow:2px 2px 4px rgba(0,0,0,0.8);z-index:10}
+      #highScore{position:absolute;top:15px;left:20px;font-weight:bold;font-size:1.1rem;color:#fff;text-shadow:2px 2px 4px rgba(0,0,0,0.8);z-index:10}
+      
+      /* Game controls */
+      .game-controls{display:flex;gap:1rem;justify-content:center;margin:1rem 0;flex-wrap:wrap}
+      .game-btn{padding:12px 24px;border-radius:8px;border:none;background:var(--primary-color);color:#fff;font-weight:600;cursor:pointer;font-size:1rem;transition:all 0.2s;box-shadow:0 4px 8px rgba(0,0,0,0.2)}
+      .game-btn:hover{background:var(--accent-color);transform:translateY(-2px);box-shadow:0 6px 12px rgba(0,0,0,0.3)}
+      .game-btn:active{transform:translateY(0)}
+      
+      /* Start screen */
+      #startScreen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:20;backdrop-filter:blur(4px)}
+      #startButton{padding:16px 32px;border-radius:12px;border:none;background:linear-gradient(to bottom, #ff7f50, #ff6347);color:#fff;font-weight:700;font-size:1.2rem;cursor:pointer;box-shadow:0 6px 20px rgba(255,127,80,0.4);transition:all 0.3s}
+      #startButton:hover{transform:scale(1.05);box-shadow:0 8px 25px rgba(255,127,80,0.6)}
+      #startButton:active{transform:scale(0.98)}
+      
+      /* Game over overlay */
+      .game-over-overlay{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.8);z-index:15;backdrop-filter:blur(4px)}
+      .game-over-overlay.show{display:flex}
+      .game-over-text{color:#fff;font-size:2rem;font-weight:bold;margin-bottom:1rem;text-shadow:2px 2px 8px rgba(0,0,0,0.8)}
+      
+      /* Particles */
+      .particle{position:absolute;width:8px;height:8px;background:#fff;border-radius:50%;pointer-events:none;z-index:6;animation:particleFloat 1s ease-out forwards}
+      @keyframes particleFloat{
+        0%{opacity:1;transform:translateY(0) scale(1);}
+        100%{opacity:0;transform:translateY(-100px) scale(0);}
+      }
+      
+      /* Screen shake */
+      @keyframes shake{
+        0%,100%{transform:translateX(0);}
+        25%{transform:translateX(-10px);}
+        75%{transform:translateX(10px);}
+      }
+      .shake{animation:shake 0.5s}
+      
+      /* Instructions */
+      .instructions{background:#f0f0f0;padding:1rem;border-radius:8px;margin:1rem 0;border-left:4px solid var(--primary-color)}
+      .instructions p{margin:0.5rem 0;font-size:0.95rem;color:#555}
+      
+      /* Responsive */
+      @media (max-width:768px){
+        #game{height:350px;max-width:100%}
+        #bulldog{width:60px;height:60px;left:40px}
+        .obstacle.low{bottom:100px;width:30px;height:24px}
+        .obstacle.high{bottom:60px;width:24px;height:70px}
+        #score{font-size:1.2rem;top:10px;right:15px}
+        #highScore{font-size:1rem;top:10px;left:15px}
+      }
+      @media (max-width:480px){
+        #game{height:300px}
+        main{padding:12px}
+      }
+	</style>
+</head>
+<body>
+	<!-- Navigation Menu (same on all pages) -->
+	<nav>
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="hobbies.html">Hobbies</a></li>
+			<li><a href="discover.html">Discover UMD</a></li>
+			<li><a href="Samantha%20Resume%202025.pdf" target="_blank" rel="noopener noreferrer">Resume</a></li>
+			<li><a href="Career Info.html">Career</a></li>
+			<li><a href="Game Fun.html">Game</a></li>
+			<li><a href="video.html">Video</a></li>
+			<li><a href="contact.html">Contact</a></li>
+		</ul>
+	</nav>
 
-    <main>
-      <h1>Bulldog Runner</h1>
-      <p>Use Space / ↑ to jump and ↓ to duck. Click Start to begin.</p>
+	<main>
+		<h1>Bulldog Runner</h1>
+		
+		<div class="instructions">
+			<p><strong>How to Play:</strong> Use <kbd>Space</kbd> or <kbd>↑</kbd> to jump, <kbd>↓</kbd> to duck. Avoid obstacles and try to beat your high score!</p>
+			<p>The game gets faster as your score increases. Good luck!</p>
+		</div>
 
-      <div id="game">
-        <div id="startScreen"><button id="startButton">Start Game</button></div>
-        <div id="ground"></div>
-        <div id="bulldog" aria-hidden="true"></div>
-        <div id="score">Score: 0</div>
-      </div>
+		<div class="game-controls">
+			<button id="pauseButton" class="game-btn" style="display:none;">Pause</button>
+			<button id="resumeButton" class="game-btn" style="display:none;">Resume</button>
+		</div>
 
-      <section id="leaderboard">
-        <h2>Top Scores</h2>
-        <ol id="scoreList"></ol>
-      </section>
-    </main>
+		<div id="game">
+			<div id="startScreen">
+				<button id="startButton">Start Game</button>
+				<p style="color:#fff;margin-top:1rem;font-size:1.1rem;">Press Space or ↑ to jump, ↓ to duck</p>
+			</div>
+			<div id="gameOverOverlay" class="game-over-overlay">
+				<div class="game-over-text">Game Over!</div>
+				<div id="finalScore" style="color:#fff;font-size:1.5rem;margin-bottom:1rem;"></div>
+				<button id="restartButton" class="game-btn">Play Again</button>
+			</div>
+			<div id="highScore">High: 0</div>
+			<div id="score">Score: 0</div>
+			<div id="ground"></div>
+			<div id="bulldog" aria-hidden="true"></div>
+		</div>
 
-    <script>
-      // Clean single-file Bulldog Runner
-      (function(){
-        const game = document.getElementById('game');
-        const bulldog = document.getElementById('bulldog');
-        const scoreDisplay = document.getElementById('score');
-        const scoreList = document.getElementById('scoreList');
-        const startScreen = document.getElementById('startScreen');
-        const startButton = document.getElementById('startButton');
+		<section id="leaderboard">
+			<h2>Top Scores</h2>
+			<ol id="scoreList"></ol>
+		</section>
+	</main>
 
-        const groundHeight = 40;
-        const gameWidth = () => game.clientWidth;
+	<!-- Footer (same on all pages) -->
+	<footer>
+		<p>&copy; 2025 Samantha Ibberson. All rights reserved.</p>
+	</footer>
 
-        let isJumping=false,isDucking=false,jumpHeight=0,jumpSpeed=0;
-        let obstacles=[],gameSpeed=6,score=0,gameOver=false,gameStarted=false,updateRunning=false,obstacleTimer=null,duckTimeout=null;
+	<script src="js/main.js"></script>
+	<script>
+		// Enhanced Bulldog Runner Game
+		(function(){
+			const game = document.getElementById('game');
+			const bulldog = document.getElementById('bulldog');
+			const scoreDisplay = document.getElementById('score');
+			const highScoreDisplay = document.getElementById('highScore');
+			const scoreList = document.getElementById('scoreList');
+			const startScreen = document.getElementById('startScreen');
+			const startButton = document.getElementById('startButton');
+			const pauseButton = document.getElementById('pauseButton');
+			const resumeButton = document.getElementById('resumeButton');
+			const gameOverOverlay = document.getElementById('gameOverOverlay');
+			const finalScoreDisplay = document.getElementById('finalScore');
+			const restartButton = document.getElementById('restartButton');
 
-        function startGame(){
-          obstacles.forEach(o=>o.remove()); obstacles=[]; gameStarted=true; gameOver=false; score=0; scoreDisplay.textContent='Score: 0';
-          startScreen.style.display='none'; bulldog.style.bottom = groundHeight + 'px'; bulldog.classList.remove('ducking');
-          if(obstacleTimer) clearInterval(obstacleTimer);
-          obstacleTimer = setInterval(()=>{ if(!gameOver && gameStarted) createObstacle(); }, 1000 + Math.random()*1000);
-          if(!updateRunning){ updateRunning=true; update(); }
-        }
+			// Audio elements
+			const backgroundMusic = new Audio('audio/background-music.mp3');
+			backgroundMusic.loop = true;
+			backgroundMusic.volume = 0.5;
+			
+			const jumpSound = new Audio('audio/jump.mp3');
+			jumpSound.volume = 0.7;
+			
+			const gameOverSound = new Audio('audio/game-over.mp3');
+			gameOverSound.volume = 0.8;
 
-        function createObstacle(){
-          const obs = document.createElement('div'); obs.className='obstacle';
-          const low = Math.random() < 0.5; obs.classList.add(low? 'low':'high');
-          obs.style.left = (gameWidth()+20) + 'px'; game.appendChild(obs); obstacles.push(obs);
-        }
+			const groundHeight = 60;
+			const gameWidth = () => game.clientWidth;
+			const baseGameSpeed = 6;
+			const speedIncrease = 0.5;
 
-        function jump(){ if(isJumping || isDucking) return; isJumping=true; jumpSpeed=14; }
-        function duck(){ if(isJumping || isDucking) return; isDucking=true; bulldog.classList.add('ducking');
-          duckTimeout = setTimeout(()=>{ bulldog.classList.remove('ducking'); isDucking=false; }, 600);
-        }
+			let isJumping=false,isDucking=false,jumpHeight=0,jumpSpeed=0;
+			let obstacles=[],gameSpeed=baseGameSpeed,score=0,highScore=0,gameOver=false,gameStarted=false,isPaused=false,updateRunning=false,obstacleTimer=null,duckTimeout=null,clouds=[];
 
-        function update(){
-          if(gameOver || !gameStarted){ updateRunning=false; return; }
-          if(isJumping){ jumpHeight += jumpSpeed; jumpSpeed -= 1; if(jumpHeight <= 0){ jumpHeight = 0; isJumping=false; } bulldog.style.bottom = groundHeight + jumpHeight + 'px'; }
+			// Load high score
+			function loadHighScore(){
+				const key='bulldogHighScores_v1';
+				const scores=JSON.parse(localStorage.getItem(key) || '[]');
+				if(scores.length > 0) highScore = scores[0];
+				highScoreDisplay.textContent = `High: ${highScore}`;
+			}
 
-          for(let i=obstacles.length-1;i>=0;i--){
-            const obs = obstacles[i];
-            let left = parseFloat(obs.style.left) || (gameWidth()+20);
-            left -= gameSpeed;
-            if(left + obs.clientWidth < 0){ obs.remove(); obstacles.splice(i,1); score++; scoreDisplay.textContent = 'Score: ' + score; }
-            else { obs.style.left = left + 'px';
-              const bRect = bulldog.getBoundingClientRect();
-              const oRect = obs.getBoundingClientRect();
-              if(bRect.right > oRect.left && bRect.left < oRect.right && bRect.bottom > oRect.top && bRect.top < oRect.bottom){
-                gameOver = true; gameStarted = false; clearInterval(obstacleTimer); saveScore(score); startScreen.style.display='flex'; startButton.textContent='Play Again';
-              }
-            }
-          }
+			// Create background clouds
+			function createClouds(){
+				for(let i=0; i<5; i++){
+					const cloud = document.createElement('div');
+					cloud.className = 'cloud';
+					const size = 40 + Math.random() * 60;
+					const top = 20 + Math.random() * 150;
+					const delay = Math.random() * 20;
+					cloud.style.width = size + 'px';
+					cloud.style.height = size * 0.6 + 'px';
+					cloud.style.top = top + 'px';
+					cloud.style.left = (Math.random() * 1100) + 'px';
+					cloud.style.animationDelay = delay + 's';
+					cloud.style.animationDuration = (15 + Math.random() * 10) + 's';
+					game.appendChild(cloud);
+					clouds.push(cloud);
+				}
+			}
 
-          requestAnimationFrame(update);
-        }
+			// Create particles effect
+			function createParticles(x, y, count=5){
+				for(let i=0; i<count; i++){
+					const particle = document.createElement('div');
+					particle.className = 'particle';
+					particle.style.left = (x + Math.random() * 40 - 20) + 'px';
+					particle.style.top = y + 'px';
+					particle.style.animationDelay = (Math.random() * 0.2) + 's';
+					game.appendChild(particle);
+					setTimeout(() => particle.remove(), 1000);
+				}
+			}
 
-        document.addEventListener('keydown',(e)=>{
-          if(e.code === 'Space' || e.code === 'ArrowUp'){ e.preventDefault(); if(!gameStarted) return; jump(); }
-          else if(e.code === 'ArrowDown'){ e.preventDefault(); if(!gameStarted) return; duck(); }
-        });
+			// Screen shake effect
+			function shakeScreen(){
+				game.classList.add('shake');
+				setTimeout(() => game.classList.remove('shake'), 500);
+			}
 
-        startButton.addEventListener('click', ()=>{ if(!gameStarted) startGame(); });
+			function startGame(){
+				obstacles.forEach(o=>o.remove()); obstacles=[]; 
+				gameStarted=true; gameOver=false; isPaused=false; score=0; gameSpeed=baseGameSpeed;
+				scoreDisplay.textContent='Score: 0';
+				startScreen.style.display='none'; 
+				gameOverOverlay.classList.remove('show');
+				pauseButton.style.display='inline-block';
+				resumeButton.style.display='none';
+				bulldog.style.bottom = groundHeight + 'px'; 
+				bulldog.classList.remove('ducking', 'jumping');
+				if(obstacleTimer) clearInterval(obstacleTimer);
+				obstacleTimer = setInterval(()=>{ if(!gameOver && gameStarted && !isPaused) createObstacle(); }, 1000 + Math.random()*1000);
+				if(!updateRunning){ updateRunning=true; update(); }
+				// Start background music
+				backgroundMusic.currentTime = 0;
+				backgroundMusic.play().catch(e => console.log('Audio play failed:', e));
+			}
 
-        function saveScore(newScore){ const key='bulldogHighScores_v1'; let scores=JSON.parse(localStorage.getItem(key) || '[]'); scores.push(newScore); scores.sort((a,b)=>b-a); scores = scores.slice(0,5); localStorage.setItem(key, JSON.stringify(scores)); displayScores(); }
-        function displayScores(){ const key='bulldogHighScores_v1'; const scores=JSON.parse(localStorage.getItem(key) || '[]'); scoreList.innerHTML=''; scores.forEach((s,i)=>{ const li=document.createElement('li'); li.textContent = `${i+1}. ${s} pts`; scoreList.appendChild(li); }); }
+			function createObstacle(){
+				const obs = document.createElement('div'); 
+				obs.className='obstacle';
+				const low = Math.random() < 0.5; 
+				obs.classList.add(low? 'low':'high');
+				obs.style.left = (gameWidth()+20) + 'px'; 
+				game.appendChild(obs); 
+				obstacles.push(obs);
+			}
 
-        // init
-        displayScores();
-      })();
-    </script>
-  </body>
+			function pauseGame(){
+				if(!gameStarted || gameOver) return;
+				isPaused = true;
+				pauseButton.style.display='none';
+				resumeButton.style.display='inline-block';
+				backgroundMusic.pause();
+			}
+
+			function resumeGame(){
+				if(!gameStarted || gameOver) return;
+				isPaused = false;
+				pauseButton.style.display='inline-block';
+				resumeButton.style.display='none';
+				backgroundMusic.play().catch(e => console.log('Audio play failed:', e));
+			}
+
+			function jump(){ 
+				if(isJumping || isDucking || isPaused) return; 
+				isJumping=true; 
+				jumpSpeed=16; 
+				bulldog.classList.add('jumping');
+				// Create particles at bulldog position
+				const bRect = bulldog.getBoundingClientRect();
+				const gRect = game.getBoundingClientRect();
+				createParticles(bRect.left - gRect.left + bRect.width/2, bRect.top - gRect.top + bRect.height);
+				// Play jump sound
+				jumpSound.currentTime = 0;
+				jumpSound.play().catch(e => console.log('Jump sound failed:', e));
+			}
+			function duck(){ if(isJumping || isDucking) return; isDucking=true; bulldog.classList.add('ducking');
+				duckTimeout = setTimeout(()=>{ bulldog.classList.remove('ducking'); isDucking=false; }, 600);
+			}
+
+			function update(){
+				if(gameOver || !gameStarted){ updateRunning=false; return; }
+				if(isPaused){ requestAnimationFrame(update); return; }
+				
+				// Update jump animation
+				if(isJumping){ 
+					jumpHeight += jumpSpeed; 
+					jumpSpeed -= 0.8; 
+					if(jumpHeight <= 0){ 
+						jumpHeight = 0; 
+						isJumping=false; 
+						bulldog.classList.remove('jumping');
+					} 
+					bulldog.style.bottom = groundHeight + jumpHeight + 'px'; 
+				}
+
+				// Increase difficulty based on score
+				const speedLevel = Math.floor(score / 10);
+				gameSpeed = baseGameSpeed + (speedLevel * speedIncrease);
+
+				// Update obstacles
+				for(let i=obstacles.length-1;i>=0;i--){
+					const obs = obstacles[i];
+					let left = parseFloat(obs.style.left) || (gameWidth()+20);
+					left -= gameSpeed;
+					if(left + obs.clientWidth < 0){ 
+						obs.remove(); 
+						obstacles.splice(i,1); 
+						score++; 
+						scoreDisplay.textContent = 'Score: ' + score;
+						if(score > highScore){
+							highScore = score;
+							highScoreDisplay.textContent = `High: ${highScore}`;
+						}
+					} else { 
+						obs.style.left = left + 'px';
+						const bRect = bulldog.getBoundingClientRect();
+						const oRect = obs.getBoundingClientRect();
+						if(bRect.right > oRect.left && bRect.left < oRect.right && bRect.bottom > oRect.top && bRect.top < oRect.bottom){
+							gameOver = true; 
+							gameStarted = false; 
+							clearInterval(obstacleTimer); 
+							pauseButton.style.display='none';
+							resumeButton.style.display='none';
+							// Stop background music and play game over sound
+							backgroundMusic.pause();
+							backgroundMusic.currentTime = 0;
+							gameOverSound.currentTime = 0;
+							gameOverSound.play().catch(e => console.log('Game over sound failed:', e));
+							// Show game over screen
+							finalScoreDisplay.textContent = `Final Score: ${score}`;
+							gameOverOverlay.classList.add('show');
+							shakeScreen();
+							saveScore(score); 
+						}
+					}
+				}
+
+				requestAnimationFrame(update);
+			}
+
+			document.addEventListener('keydown',(e)=>{
+				if(e.code === 'Space' || e.code === 'ArrowUp'){ 
+					e.preventDefault(); 
+					if(!gameStarted && !gameOver) startGame();
+					else if(gameStarted && !gameOver) jump(); 
+				}
+				else if(e.code === 'ArrowDown'){ 
+					e.preventDefault(); 
+					if(gameStarted && !gameOver) duck(); 
+				}
+				else if(e.code === 'KeyP' || e.code === 'Escape'){
+					e.preventDefault();
+					if(isPaused) resumeGame();
+					else pauseGame();
+				}
+			});
+
+			startButton.addEventListener('click', ()=>{ if(!gameStarted) startGame(); });
+			restartButton.addEventListener('click', ()=>{ 
+				gameOverOverlay.classList.remove('show');
+				startGame(); 
+			});
+			pauseButton.addEventListener('click', pauseGame);
+			resumeButton.addEventListener('click', resumeGame);
+
+			function saveScore(newScore){ 
+				const key='bulldogHighScores_v1'; 
+				let scores=JSON.parse(localStorage.getItem(key) || '[]'); 
+				scores.push(newScore); 
+				scores.sort((a,b)=>b-a); 
+				scores = scores.slice(0,5); 
+				localStorage.setItem(key, JSON.stringify(scores)); 
+				displayScores(); 
+			}
+			
+			function displayScores(){ 
+				const key='bulldogHighScores_v1'; 
+				const scores=JSON.parse(localStorage.getItem(key) || '[]'); 
+				scoreList.innerHTML=''; 
+				if(scores.length === 0){
+					scoreList.innerHTML = '<li>No scores yet. Be the first!</li>';
+				} else {
+					scores.forEach((s,i)=>{ 
+						const li=document.createElement('li'); 
+						li.textContent = `${i+1}. ${s} pts`; 
+						scoreList.appendChild(li); 
+					}); 
+				}
+			}
+
+			// Initialize
+			loadHighScore();
+			displayScores();
+			createClouds();
+		})();
+	</script>
+</body>
 </html>
 
